@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var mTextMessageController = TextEditingController();
 
   List _messages = [];
-  _log(String message) {
+  _log(dynamic message) {
     print(message);
     _messages.add(message);
     setState(() {});
@@ -36,17 +36,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    socket = io('http://onlylogistics-core.herokuapp.com', <String, dynamic>{
+    // socket = io('http://onlylogistics-core.herokuapp.com', <String, dynamic>{
+    //   'transports': ['websocket'],
+    //   'autoConnect': false,
+    // });
+    socket = io('http://staging-drlogistics.herokuapp.com', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });
     socket.connect();
 
     socket.on('connect', (_) {
-      _log('Websocket connect');
+      _log('Websocket connected successfully');
     });
 
-    socket.on("received-message", (data) => _log(data));
+    socket.on("receive-message", (data) => _log(data.toString()));
   }
 
   @override
